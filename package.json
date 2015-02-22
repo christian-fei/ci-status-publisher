@@ -1,0 +1,19 @@
+{
+  "name": "ci-status-publisher",
+  "version": "0.0.0",
+  "description": "ci-status-publisher ===================",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christian-fei/ci-status-publisher.git"
+  },
+  "author": "Christian Fei",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/christian-fei/ci-status-publisher/issues"
+  },
+  "homepage": "https://github.com/christian-fei/ci-status-publisher"
+}
