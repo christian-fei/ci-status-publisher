@@ -1,4 +1,4 @@
-[![Circle CI](https://circleci.com/gh/christian-fei/ci-status-publisher.svg?style=svg)](https://circleci.com/gh/christian-fei/ci-status-publisher)
+[![Circle CI](https://circleci.com/gh/christian-fei/webhook-publisher.svg?style=svg)](https://circleci.com/gh/christian-fei/webhook-publisher)
 
-ci-status-publisher
-===================
+webhook-publisher
+=============

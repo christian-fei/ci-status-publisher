@@ -1,21 +1,21 @@
 {
-  "name": "ci-status-publisher",
+  "name": "webhook-publisher",
   "version": "0.0.0",
-  "description": "ci-status-publisher ===================",
+  "description": "webhook-publisher ===================",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/christian-fei/ci-status-publisher.git"
+    "url": "https://github.com/christian-fei/webhook-publisher.git"
   },
   "author": "Christian Fei",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/christian-fei/ci-status-publisher/issues"
+    "url": "https://github.com/christian-fei/webhook-publisher/issues"
   },
-  "homepage": "https://github.com/christian-fei/ci-status-publisher",
+  "homepage": "https://github.com/christian-fei/webhook-publisher",
   "devDependencies": {
     "chai": "^2.0.0",
     "mocha": "^2.1.0"
