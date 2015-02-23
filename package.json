@@ -4,7 +4,8 @@
   "description": "webhook-publisher ===================",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "test-watch": "./node_modules/mocha/bin/mocha --watch --growl"
   },
   "repository": {
     "type": "git",
