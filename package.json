@@ -19,6 +19,10 @@
   "homepage": "https://github.com/christian-fei/webhook-publisher",
   "devDependencies": {
     "chai": "^2.0.0",
-    "mocha": "^2.1.0"
+    "mocha": "^2.1.0",
+    "node-simple-router": "^0.9.4-2"
+  },
+  "dependencies": {
+    "morgan": "^1.5.1"
   }
 }
