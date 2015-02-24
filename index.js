@@ -39,6 +39,7 @@ net.createServer(function (socket){
 
 function broadcastTCP(clients, message) {
   clients.forEach(function (client) {
+    console.log( 'broadcasting to', client.name )
     client.write(message)
   })
 }
