@@ -15,6 +15,7 @@ router.any(function(){
   logger.apply(this,arguments)
 })
 router.get('/hook', function (req, res) {
+  broadcastTCP(clientsTCP, JSON.stringify(req.body))
   res.end()
 })
 
@@ -27,7 +28,7 @@ console.log( 'HTTP server listening on localhost:'+WEBHOOK_PUBLISHER_HTTP_PORT )
 
 
 net.createServer(function (socket){
-  socket.name = socket.remoteAddress + ":" + socket.remotePort + ':' + socket._handle.fd
+  socket.name = socket.remoteAddress + ':' + socket.remotePort + ':' + socket._handle.fd
   console.log( 'TCP client connected', socket.name )
   clientsTCP.push(socket) 
   socket.on('end', function () {
