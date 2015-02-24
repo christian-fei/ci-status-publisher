@@ -14,8 +14,7 @@ var WEBHOOK_PUBLISHER_TCP_PORT = process.env.WEBHOOK_PUBLISHER_TCP_PORT || 3001
 router.any(function(){
   logger.apply(this,arguments)
 })
-router.get('/hook', function (req, res) {
-  console.log( 'clientsTCP', clientsTCP.length )
+router.post('/hook', function (req, res) {
   broadcastTCP(clientsTCP, JSON.stringify(req.body))
   res.end()
 })
@@ -40,7 +39,6 @@ net.createServer(function (socket){
 
 function broadcastTCP(clients, message) {
   clients.forEach(function (client) {
-    console.log( 'broadcasting to', client.name )
     client.write(message)
   })
 }
