@@ -15,6 +15,7 @@ router.any(function(){
   logger.apply(this,arguments)
 })
 router.get('/hook', function (req, res) {
+  console.log( 'clientsTCP', clientsTCP.length )
   broadcastTCP(clientsTCP, JSON.stringify(req.body))
   res.end()
 })
