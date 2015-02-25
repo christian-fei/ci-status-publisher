@@ -43,8 +43,7 @@ net.createServer(function (socket){
 
 function broadcastTCP(clients, message) {
   clients.forEach(function (client) {
-    client.write(message)
-    client.end()
+    client.end(message)
   })
 }
 
