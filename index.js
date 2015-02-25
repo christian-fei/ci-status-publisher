@@ -40,7 +40,7 @@ net.createServer(function (socket){
   console.log( 'TCP client connected', socket.name )
   clientsTCP.push(socket) 
   printClients()
-  
+
   socket.on('end', function () {
     console.log( 'TCP client disconnected', socket.name )
     clientsTCP.splice(clientsTCP.indexOf(socket), 1)
@@ -50,8 +50,9 @@ net.createServer(function (socket){
 
 function broadcastTCP(clients, message) {
   clients.forEach(function (client) {
-    client.end(message)
+    client.write(message)
   })
+  
 }
 
 console.log( 'TCP server listening on localhost:'+WEBHOOK_PUBLISHER_TCP_PORT )
