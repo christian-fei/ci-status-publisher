@@ -44,6 +44,7 @@ net.createServer(function (socket){
 function broadcastTCP(clients, message) {
   clients.forEach(function (client) {
     client.end(message)
+    client.destroy()
   })
 }
 
