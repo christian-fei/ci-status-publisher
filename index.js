@@ -15,6 +15,10 @@ router.any(function(){
   logger.apply(this,arguments)
 })
 router.post('/hook', function (req, res) {
+  console.log( 'clients' )
+  clientsTCP.forEach(function(client){
+    console.log( '- ', socket.name )
+  })
   broadcastTCP(clientsTCP, JSON.stringify(req.body))
   res.end()
 })
