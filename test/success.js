@@ -2,6 +2,6 @@ var expect = require('chai').expect
 
 describe('always passes', function () {
   it('passes succesfully', function () {
-    expect( 42 ).to.be.ok
+    expect( 42 ).not.to.be.ok
   });
 })
