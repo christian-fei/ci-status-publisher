@@ -37,6 +37,7 @@ net.createServer(function (socket){
   clientsTCP.push(socket) 
   socket.on('end', function () {
     console.log( 'TCP client disconnected', socket.name )
+    socket.destroy()
     clientsTCP.splice(clientsTCP.indexOf(socket), 1)
   }) 
 }).listen(WEBHOOK_PUBLISHER_TCP_PORT)
@@ -44,7 +45,6 @@ net.createServer(function (socket){
 function broadcastTCP(clients, message) {
   clients.forEach(function (client) {
     client.end(message)
-    client.destroy()
   })
 }
 
