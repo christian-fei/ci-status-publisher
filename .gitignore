@@ -27,3 +27,5 @@ build/Release
 node_modules
 ci-status-publisher.sublime-workspace
 *.sublime-workspace
+cicleci.failure.json
+cicleci.success.json
