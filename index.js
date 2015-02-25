@@ -39,6 +39,8 @@ net.createServer(function (socket){
   socket.name = socket.remoteAddress + ':' + socket.remotePort + ':' + socket._handle.fd
   console.log( 'TCP client connected', socket.name )
   clientsTCP.push(socket) 
+  printClients()
+  
   socket.on('end', function () {
     console.log( 'TCP client disconnected', socket.name )
     clientsTCP.splice(clientsTCP.indexOf(socket), 1)
