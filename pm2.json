@@ -1,0 +1,4 @@
+[{
+  "name"      : "webhook-publisher",
+  "script"    : "./index.js"
+}]
