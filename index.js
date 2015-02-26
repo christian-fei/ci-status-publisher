@@ -12,9 +12,9 @@ var WEBHOOK_PUBLISHER_TCP_PORT = process.env.WEBHOOK_PUBLISHER_TCP_PORT || 3001
 
 
 function printClients(){
-  console.log( 'clients' )
+  console.log( '-- clients' )
   clientsTCP.forEach(function(client){
-    console.log( '- ', client.name )
+    console.log( '---- ', client.name )
   })  
 }
 
@@ -31,18 +31,18 @@ router.post('/hook', function (req, res) {
 http
 .createServer(router)
 .listen(WEBHOOK_PUBLISHER_HTTP_PORT)
-console.log( 'HTTP server listening on localhost:'+WEBHOOK_PUBLISHER_HTTP_PORT )
+console.log( '-- HTTP server listening on localhost:'+WEBHOOK_PUBLISHER_HTTP_PORT )
 
 
 
 net.createServer(function (socket){
   socket.name = socket.remoteAddress + ':' + socket.remotePort + ':' + socket._handle.fd
-  console.log( 'TCP client connected', socket.name )
+  console.log( '-- TCP client connected', socket.name )
   clientsTCP.push(socket) 
   printClients()
 
   socket.on('end', function () {
-    console.log( 'TCP client disconnected', socket.name )
+    console.log( '-- TCP client disconnected', socket.name )
     clientsTCP.splice(clientsTCP.indexOf(socket), 1)
     printClients()
   }) 
@@ -55,4 +55,4 @@ function broadcastTCP(clients, message) {
   
 }
 
-console.log( 'TCP server listening on localhost:'+WEBHOOK_PUBLISHER_TCP_PORT )
+console.log( '-- TCP server listening on localhost:'+WEBHOOK_PUBLISHER_TCP_PORT )
