@@ -9,9 +9,3 @@ test:
 notify:
   webhooks:
     - url: http://146.185.167.197:3000/hook
-
-deployment:
-  production:
-    branch: master
-    commands:
-      - ssh pigeon@146.185.167.197 '(cd /home/pigeon/apps/webhook-publisher && ggpur) && pm2 restart pm2.json'
