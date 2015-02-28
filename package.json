@@ -23,6 +23,7 @@
     "node-simple-router": "^0.9.4-2"
   },
   "dependencies": {
+    "json-over-tcp": "^0.3.2",
     "morgan": "^1.5.1"
   }
 }

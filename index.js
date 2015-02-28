@@ -1,7 +1,7 @@
 var http = require('http')
   , router = require('node-simple-router')()
   , url  = require('url')
-  , net = require('net')
+  , jot = require('json-over-tcp')
   , morgan = require('morgan')
   , logger = morgan('combined')
 
@@ -35,7 +35,7 @@ console.log( '-- HTTP server listening on localhost:'+WEBHOOK_PUBLISHER_HTTP_POR
 
 
 
-net.createServer(function (socket){
+jot.createServer(function (socket){
   socket.name = socket.remoteAddress + ':' + socket.remotePort + ':' + socket._handle.fd
   console.log( '-- TCP client connected', socket.name )
   clientsTCP.push(socket) 
