@@ -10,13 +10,10 @@ var express = require('express')
 
 var WEBHOOK_PUBLISHER_HTTP_PORT = process.env.WEBHOOK_PUBLISHER_HTTP_PORT || 3000
 var WEBHOOK_PUBLISHER_TCP_PORT = process.env.WEBHOOK_PUBLISHER_TCP_PORT || 3001
-var WEBHOOK_PUBLISHER_TCP_COMM_PORT = process.env.WEBHOOK_PUBLISHER_TCP_COMM_PORT || 3002
 
 var app = express()
 var tcpServer = net.createServer()
-var tcpCommServer = net.createServer()
 var tcpSockets = new TCPSockets()
-var tcpCommSockets = new TCPSockets()
 
 app.use(bodyParser.json())
 app.use(morgan('combined'))
@@ -29,7 +26,6 @@ app.post('/hook', function (req, res) {
   log.info( 'hook:', req.body )
   printSockets(tcpSockets.sockets)
   tcpSockets.broadcast(req.body)
-  tcpCommSockets.broadcast(req.body)
   res.end()
 })
 
@@ -43,10 +39,6 @@ tcpServer.listen(WEBHOOK_PUBLISHER_TCP_PORT, function(){
   log.info( 'TCP server listening on http://localhost:%s', WEBHOOK_PUBLISHER_TCP_PORT )
 })
 
-tcpCommServer.listen(WEBHOOK_PUBLISHER_TCP_COMM_PORT, function(){
-  log.info( 'TCP COMM server listening on http://localhost:%s', WEBHOOK_PUBLISHER_TCP_COMM_PORT )
-})
-
 
 tcpServer.on('connection', function (socket){
   socket = new JSONSocket(socket)
@@ -58,20 +50,6 @@ tcpServer.on('connection', function (socket){
     log.info( 'TCP client disconnected', socket.id )
     tcpSockets.remove(socket)
     printSockets(tcpSockets.sockets)
-  }) 
-})
-
-
-tcpCommServer.on('connection', function (socket){
-  socket = new JSONSocket(socket)
-  tcpCommSockets.add(socket) 
-  log.info( 'TCP COMM server connected', socket.id )
-  printSockets(tcpCommSockets.sockets)
-
-  socket.on('end', function () {
-    log.info( 'TCP COMM server disconnected', socket.id )
-    tcpCommSockets.remove(socket)
-    printSockets(tcpCommSockets.sockets)
   }) 
 })
 
