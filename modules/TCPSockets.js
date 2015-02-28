@@ -13,7 +13,7 @@ function TCPSockets(){
     this.sockets.forEach(function(_connections, index){
       if( _connections.id === socket.id ) this.sockets.splice(index, 1)
     }.bind(this))
-    return this.socket
+    return this.sockets
   }
 
   this.broadcast = function(message){
