@@ -1,58 +1,60 @@
-var http = require('http')
-  , router = require('node-simple-router')()
-  , url  = require('url')
-  , jot = require('json-over-tcp')
+var express = require('express')
+  , bodyParser = require('body-parser')
   , morgan = require('morgan')
-  , logger = morgan('combined')
-
-var clientsTCP = []
+  , net = require('net')
+  , JSONSocket = require('json-socket')
+  , TCPClients = require('./modules/TCPClients')
 
 var WEBHOOK_PUBLISHER_HTTP_PORT = process.env.WEBHOOK_PUBLISHER_HTTP_PORT || 3000
 var WEBHOOK_PUBLISHER_TCP_PORT = process.env.WEBHOOK_PUBLISHER_TCP_PORT || 3001
 
+var app = express()
+var tcpServer = net.createServer()
+var tcpClients = new TCPClients()
 
-function printConnectedTCPClients(){
-  console.log( '-- clients' )
-  clientsTCP.forEach(function(client){
-    console.log( '---- ', client.name )
-  })  
-}
+app.use(bodyParser.json())
+app.use(morgan('combined'))
 
-router.any(function(){
-  logger.apply(this,arguments)
+app.get('/', function (req, res) {
+  res.send('Hello World!')
 })
-router.post('/hook', function (req, res) {
+
+app.post('/hook', function (req, res) {
+  console.log( '-- hook:', req.body )
   printConnectedTCPClients()
-  broadcastTCP(clientsTCP, JSON.stringify(req.body))
+  tcpClients.broadcast(req.body)
   res.end()
 })
 
 
-http
-.createServer(router)
-.listen(WEBHOOK_PUBLISHER_HTTP_PORT)
-console.log( '-- HTTP server listening on localhost:'+WEBHOOK_PUBLISHER_HTTP_PORT )
+var httpServer = app.listen(WEBHOOK_PUBLISHER_HTTP_PORT, function () {
+  var port = httpServer.address().port
+  console.log('-- HTTP server listening at http://localhost:%s', port)
+})
+
+tcpServer.listen(WEBHOOK_PUBLISHER_TCP_PORT, function(){
+  console.log( '-- TCP server listening on http://localhost:' + WEBHOOK_PUBLISHER_TCP_PORT )
+})
 
 
-
-jot.createServer(function (socket){
-  socket.name = socket.remoteAddress + ':' + socket.remotePort + ':' + socket._handle.fd
+tcpServer.on('connection',function (socket){
+  var name = socket.remoteAddress + ':' + socket.remotePort + ':' + socket._handle.fd
+  socket = new JSONSocket(socket)
+  socket.name = name
   console.log( '-- TCP client connected', socket.name )
-  clientsTCP.push(socket) 
+  tcpClients.add(socket) 
   printConnectedTCPClients()
 
   socket.on('end', function () {
     console.log( '-- TCP client disconnected', socket.name )
-    clientsTCP.splice(clientsTCP.indexOf(socket), 1)
+    tcpClients.remove(socket)
     printConnectedTCPClients()
   }) 
-}).listen(WEBHOOK_PUBLISHER_TCP_PORT)
+})
 
-function broadcastTCP(clients, message) {
-  clients.forEach(function (client) {
-    client.write(message)
-  })
-  
+function printConnectedTCPClients(){
+  console.log( '-- clients' )
+  tcpClients.clients.forEach(function(client){
+    console.log( '---- ', client.name )
+  })  
 }
-
-console.log( '-- TCP server listening on localhost:'+WEBHOOK_PUBLISHER_TCP_PORT )
