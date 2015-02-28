@@ -11,7 +11,7 @@ var WEBHOOK_PUBLISHER_HTTP_PORT = process.env.WEBHOOK_PUBLISHER_HTTP_PORT || 300
 var WEBHOOK_PUBLISHER_TCP_PORT = process.env.WEBHOOK_PUBLISHER_TCP_PORT || 3001
 
 
-function printClients(){
+function printConnectedTCPClients(){
   console.log( '-- clients' )
   clientsTCP.forEach(function(client){
     console.log( '---- ', client.name )
@@ -22,7 +22,7 @@ router.any(function(){
   logger.apply(this,arguments)
 })
 router.post('/hook', function (req, res) {
-  printClients()
+  printConnectedTCPClients()
   broadcastTCP(clientsTCP, JSON.stringify(req.body))
   res.end()
 })
@@ -39,12 +39,12 @@ jot.createServer(function (socket){
   socket.name = socket.remoteAddress + ':' + socket.remotePort + ':' + socket._handle.fd
   console.log( '-- TCP client connected', socket.name )
   clientsTCP.push(socket) 
-  printClients()
+  printConnectedTCPClients()
 
   socket.on('end', function () {
     console.log( '-- TCP client disconnected', socket.name )
     clientsTCP.splice(clientsTCP.indexOf(socket), 1)
-    printClients()
+    printConnectedTCPClients()
   }) 
 }).listen(WEBHOOK_PUBLISHER_TCP_PORT)
 
